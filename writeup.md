@@ -50,48 +50,61 @@ Here is an example using the `Gray` color space and HOG parameters of `orientati
 
 I tried various combinations of parameters and decided to use all channels of 'YUV' colorsapce and 'orentation =9, pixls_per_cell=(8,8)' and 'cells_per_block=(2,2)'.The following table are all the parameter combinations I explored. I firstly consider the speed with accuracy taken into consideration. There exists a trade off to determine the final parameters. If the calculation speed is short the accuracy will be lower. So I decided to use the first row of parameters to reduce the false positives and shorter time to calculate.
 
-| Configuration label| Colorspace| Orientations| Pixles Per Cell| Cells Per Block|Hog Channel|Extract Time|Accuracy|Train Time|
-|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|     
-| 1      | YUV        | 9| 8| 2| ALL| 149.32| 0.9831 |27.79
-| 2      | YCrCb      | 9| 8| 2| ALL| 183.14| 0.9809 |29.85
-| 3      | RGB        | 9| 8| 2| ALL| 190.05| 0.9662 |48.64
-| 4      | HSV        | 9| 8| 2| ALL| 175.42| 0.9817 |34.04
-| 5      | HLS        | 9| 8| 2| ALL| 182.96| 0.9794 |36.26
-| 6      | YUV        | 9| 8| 2| 1| 76.5| 0.9685 |21.44
-| 7      | YUV        | 9| 8| 2| 2| 83.85| 0.9648 |21.09
-| 8      | YUV        | 12| 8| 2| 1| 79.54| 0.969 |23.02
-| 9      | YUV        | 7| 8| 2| 1| 75.61| 0.9657 |18.83
-| 10      | YUV        | 5| 8| 2| 1| 90.25| 0.9648 |16.84
-| 11      | YUV        | 7| 16| 2| 1| 106.36| 0.9657 |19.23
-| 12      | YUV        | 7| 4| 2| 1| 329.37| 0.9628 |46.9
-| 13      | YUV        | 7| 8| 1| 1| 176.13| 0.9595 |22.34
-| 14      | YUV        | 7| 8| 3| 1| 193.77| 0.9662 |26.37
-
+| Configuration label | Colorspace | Orientations | Pixles Per Cell | Cells Per Block |Hog Channel |Extract Time |Accuracy |Train Time |
+|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|    
+| 1      | YUV        | 9 | 8 | 2 | ALL | 149.32 | 0.9831 | 27.79 |
+| 2      | YCrCb      | 9 | 8 | 2 | ALL | 183.14 | 0.9809 | 29.85 |
+| 3      | RGB        | 9 | 8 | 2 | ALL | 190.05 | 0.9662 | 48.64 |
+| 4      | HSV        | 9 | 8 | 2 | ALL | 175.42 | 0.9817 | 34.04 |
+| 5      | HLS        | 9 | 8 | 2 | ALL | 182.96 | 0.9794 | 36.26 |
+| 6      | YUV        | 9 | 8 | 2 | 1 | 76.5 | 0.9685 | 21.44 |
+| 7      | YUV        | 9 | 8 | 2 | 2 | 83.85 | 0.9648 | 21.09 |
+| 8      | YUV        | 12 | 8 | 2 | 1 | 79.54 | 0.969 | 23.02 |
+| 9      | YUV        | 7 | 8 | 2 | 1 | 75.61 | 0.9657 | 18.83 |
+| 10      | YUV        | 5 | 8 | 2 | 1 | 90.25 | 0.9648 | 16.84 |
+| 11      | YUV        | 7 | 16 | 2 | 1 | 106.36 | 0.9657 | 19.23 |
+| 12      | YUV        | 7 | 4 | 2 | 1 | 329.37 | 0.9628 | 46.9 |
+| 13      | YUV        | 7 | 8 | 1 | 1 | 176.13 | 0.9595 | 22.34 |
+| 14      | YUV        | 7 | 8 | 3 | 1 | 193.77 | 0.9662 | 26.37 |
 
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-I trained a linear SVM using...
+I trained a linear SVM using the hog features,  histogram of color and spatial binning of color features. The code can be foound in 29th code cell.Before tarning, I extracted features for cars and not cars images. Then I split the dataset into 2 parts:train dataset and test dataset. Then I normalize all the features. Finally, I calculated the accuracy for the test dataset.
 
 ### Sliding Window Search
 
 #### 1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):
+I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;). The basic rules to determine the size of sliding windows is: longer the distance, smaller the window size. So i choosed smaller window size near the middle of the image and larger window size near the bottom the image. The following images shows the windows size.
 
-![alt text][image3]
+Image with window size-64
+![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/boxes_with64size.jpg)
+
+Image with window size-96:
+![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/boxeswith96size.jpg)
+
+Image with window size-128:
+![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/boxeswith128size.jpg)
+
+For the overlap of windows, I want to detect cars' shape in much more accuracy so I choose high overlap of 75%.
 
 #### 2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
+Ultimately I searched on three scales using YUV 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
 
-![alt text][image4]
+![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/0carpos.jpg)
+![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/1carpos.jpg)
+![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/2carpos.jpg)
+![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/3carpos.jpg)
+![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/4carpos.jpg)
+![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/5carpos.jpg)
 ---
 
 ### Video Implementation
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](https://github.com/Vencentlp/Vehicle_Detection/blob/master/project_video_out.mp4)
 
 
 #### 2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
@@ -100,7 +113,7 @@ I recorded the positions of positive detections in each frame of the video.  Fro
 
 Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
 
-### Here are six frames and their corresponding heatmaps:
+### Here is a frame and the corresponding heatmap:
 
 ![alt text][image5]
 
