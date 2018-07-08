@@ -37,18 +37,37 @@ The code for this step is contained in the 5th code cell of the IPython notebook
 
 I started by reading in all the `vehicle` and `non-vehicle` images.  Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
 
-![alt text][image1]
+![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/imge_example.jpg)
 
 I then explored different color spaces and different `skimage.hog()` parameters (`orientations`, `pixels_per_cell`, and `cells_per_block`).  I grabbed random images from each of the two classes and displayed them to get a feel for what the `skimage.hog()` output looks like.
 
-Here is an example using the `YCrCb` color space and HOG parameters of `orientations=8`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
+Here is an example using the `Gray` color space and HOG parameters of `orientations=9`, `pixels_per_cell=(8, 8)` and `cells_per_block=(2, 2)`:
 
 
-![alt text][image2]
+![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/HOG.jpg)
 
 #### 2. Explain how you settled on your final choice of HOG parameters.
 
-I tried various combinations of parameters and...
+I tried various combinations of parameters and decided to use all channels of 'YUV' colorsapce and 'orentation =9, pixls_per_cell=(8,8)' and 'cells_per_block=(2,2)'.The following table are all the parameter combinations I explored. I firstly consider the speed with accuracy taken into consideration. There exists a trade off to determine the final parameters. If the calculation speed is short the accuracy will be lower. So I decided to use the first row of parameters to reduce the false positives and shorter time to calculate.
+
+| Configuration label| Colorspace| Orientations| Pixles Per Cell| Cells Per Block|Hog Channel|Extract Time|Accuracy|Train Time|
+|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|:-------------:|     
+| 1      | YUV        | 9| 8| 2| ALL| 149.32| 0.9831 |27.79
+| 2      | YCrCb      | 9| 8| 2| ALL| 183.14| 0.9809 |29.85
+| 3      | RGB        | 9| 8| 2| ALL| 190.05| 0.9662 |48.64
+| 4      | HSV        | 9| 8| 2| ALL| 175.42| 0.9817 |34.04
+| 5      | HLS        | 9| 8| 2| ALL| 182.96| 0.9794 |36.26
+| 6      | YUV        | 9| 8| 2| 1| 76.5| 0.9685 |21.44
+| 7      | YUV        | 9| 8| 2| 2| 83.85| 0.9648 |21.09
+| 8      | YUV        | 12| 8| 2| 1| 79.54| 0.969 |23.02
+| 9      | YUV        | 7| 8| 2| 1| 75.61| 0.9657 |18.83
+| 10      | YUV        | 5| 8| 2| 1| 90.25| 0.9648 |16.84
+| 11      | YUV        | 7| 16| 2| 1| 106.36| 0.9657 |19.23
+| 12      | YUV        | 7| 4| 2| 1| 329.37| 0.9628 |46.9
+| 13      | YUV        | 7| 8| 1| 1| 176.13| 0.9595 |22.34
+| 14      | YUV        | 7| 8| 3| 1| 193.77| 0.9662 |26.37
+
+
 
 #### 3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
