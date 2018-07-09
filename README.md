@@ -630,13 +630,16 @@ def pipeline(img):
     draw_img = draw_labeled_bboxes(np.copy(img), labels)
     return draw_img
 ```
-Test result on images:
+T
+est result on images:
+
 ![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/0carpos.jpg)
 ![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/1carpos.jpg)
 ![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/2carpos.jpg)
 ![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/3carpos.jpg)
 ![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/4carpos.jpg)
 ![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/5carpos.jpg)
+
 ### Test on videos:
 ```python
 vehicle=veh()
