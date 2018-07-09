@@ -648,7 +648,7 @@ clip_test = VideoFileClip('test_video.mp4')
 clip_test_out = clip_test.fl_image(pipeline)
 %time clip_test_out.write_videofile(test_out_file, audio=False)
 ```
-Here's a [link to my video result](https://github.com/Vencentlp/Vehicle_Detection/blob/master/video test_video_out.mp4)
+Here's a [link to my video result](https://github.com/Vencentlp/Vehicle_Detection/blob/master/test_video_out.mp4)
 ```python
 vehicle=veh()
 test_out_file = 'project_video_out.mp4'
