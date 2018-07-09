@@ -648,6 +648,7 @@ clip_test = VideoFileClip('test_video.mp4')
 clip_test_out = clip_test.fl_image(pipeline)
 %time clip_test_out.write_videofile(test_out_file, audio=False)
 ```
+Here's a [link to my video result](https://github.com/Vencentlp/Vehicle_Detection/blob/master/video test_video_out.mp4)
 ```python
 vehicle=veh()
 test_out_file = 'project_video_out.mp4'
@@ -655,6 +656,8 @@ clip_test = VideoFileClip('project_video.mp4')
 clip_test_out = clip_test.fl_image(pipeline)
 %time clip_test_out.write_videofile(test_out_file, audio=False)
 ```
+Here's a [link to my video result](https://github.com/Vencentlp/Vehicle_Detection/blob/master/project_video_out.mp4)
+### Conclusions
 The pipeline works well on the test videos that it can detect cars in each frame smoothly. However, there still exists some false positives. It easily happens on some places with multiple colors and lightness.
 To make the detection robust, further steps need to be taken:
 1) Augment the training dataset.
