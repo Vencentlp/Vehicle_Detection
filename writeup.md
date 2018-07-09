@@ -115,13 +115,11 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 ### Here is a frame and the corresponding heatmap:
 
-![alt text][image5]
-
-### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
-![alt text][image6]
+![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/imagewithboxes.jpg)
+![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/heatmap.jpg)
 
 ### Here the resulting bounding boxes are drawn onto the last frame in the series:
-![alt text][image7]
+![alt text](https://github.com/Vencentlp/Vehicle_Detection/raw/master/output_images/car%20position.jpg)
 
 
 
@@ -132,4 +130,21 @@ Here's an example result showing the heatmap from a series of frames of video, t
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
 Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+In this project, I followed the following steps to train a classifier:
+1) Extract features from car and not car images
+2) Slip the features and labels into test and train datasets
+3) Define a SVM classifier and train the classifier on the train dataset and get the accuracy on the test dataset.
+To make the pipeline can smoothly work on the test videos and reduce the false positives, I took the following steps:
+1) Creat class to store the parameters.
+1) Define different size of windows using sliding window method and extract the features for each window on the frame.
+2) Predict for each window using the SVM classifier which has been trained.
+3) From positive detections, I created heatmap for each frame and be stored in the class and the class only store 10 new frame results.
+4) Calculate the average heat maps for 10 new frames as the current frame heatmap.
+5) Threhold the average heatmap to identify car positions.
+6) Label the heatmap.
+7) Draw boxes on the frame.
 
+The pipeline works well on the test videos that it can detect cars in each frame smoothly. However, there still exists some false positives. It easily happens on some places with multiple colors and lightness.
+To make the detection robust, further steps need to be taken:
+1) Augment the training dataset.
+2) Use other methods like deep learning to train and improve the accuracy
